@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    {% include '_components/style.html' %}
+</head>
+
+<body>
+
+    <!-- Spinner Start -->
+    <div id="spinner"
+         class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar start -->
+    {% include '_components/navbar.html' %}
+    <!-- Navbar End -->
+
+    {% block content %}
+    	
+    {% endblock %}
+
+    <!-- Footer Start -->
+    {% include '_components/footer.html' %}
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary border-2 border-white rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+    
+    
+    <!-- JavaScript Libraries -->
+    {% include '_components/script.html' %}
+</body>
+
+</html>
