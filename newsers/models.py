@@ -3,6 +3,7 @@ from django.db import models
 
 class Category(models.Model):
     title = models.CharField(max_length=30, verbose_name="Nom")
+    slug = models.SlugField(max_length=30, verbose_name="Slug")
 
     def __str__(self):
         return self.title
@@ -10,6 +11,9 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Kategorilar"
         verbose_name = "Kategiriya"
+
+    def get_newses(self):
+        return News.objects.filter(category=self, is_active=True).order_by('-created_at')
 
 
 class Tag(models.Model):
@@ -42,3 +46,8 @@ class News(models.Model):
     class Meta:
         verbose_name_plural = "Yangiliklar"
         verbose_name = "Yangilik"
+
+    def get_image(self):
+        if self.image:
+            return self.image.url
+        return "https://www.testo.com/images/not-available.jpg"

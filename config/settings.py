@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-titgo_-a*7_chjz*%d_4$r3by(=f4es@-znxkv#9)c7)c^@m#_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,7 +83,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 
@@ -94,8 +94,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR /'staticfiles'
-STATICFILES_DIR = [
+STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
+STATICFILES_DIRS = [
     BASE_DIR.joinpath('static'),
 ]
 
