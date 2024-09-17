@@ -35,6 +35,7 @@ class News(models.Model):
     description = models.TextField(verbose_name="Kontent")
     image = models.ImageField(upload_to="news/images/", verbose_name="Rasm")
     views = models.PositiveIntegerField(default=0, verbose_name="Ko'rilishlar")
+    shares = models.PositiveIntegerField(default=0, verbose_name="Ulashishlar")
     is_active = models.BooleanField(default=True, verbose_name="Faollik")
     is_banner = models.BooleanField(default=False, verbose_name="Bannerga joylash")
     is_weekly = models.BooleanField(default=False, verbose_name="Haftalik")
@@ -51,3 +52,15 @@ class News(models.Model):
         if self.image:
             return self.image.url
         return "https://www.testo.com/images/not-available.jpg"
+
+
+class Email(models.Model):
+    email = models.EmailField(verbose_name="E-mail")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Qo'shilgan vaqti")
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name_plural = "E-maillar"
+        verbose_name = "E-mail"

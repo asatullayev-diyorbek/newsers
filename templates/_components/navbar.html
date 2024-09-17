@@ -23,15 +23,13 @@
                 </div>
                 <div class="top-link flex-lg-wrap">
                     <i class="fas fa-calendar-alt text-white border-end border-secondary pe-2 me-2"> <span
-                            class="text-body">Tuesday, Sep 12, 2024</span></i>
+                           id="current-date1" class="text-body">fetching date...</span></i>
                     <div class="d-flex icon">
                         <p class="mb-0 text-white me-2">Follow Us:</p>
                         <a href="" class="me-2"><i class="fab fa-facebook-f text-body link-hover"></i></a>
                         <a href="" class="me-2"><i class="fab fa-twitter text-body link-hover"></i></a>
                         <a href="" class="me-2"><i class="fab fa-instagram text-body link-hover"></i></a>
                         <a href="" class="me-2"><i class="fab fa-youtube text-body link-hover"></i></a>
-                        <a href="" class="me-2"><i class="fab fa-linkedin-in text-body link-hover"></i></a>
-                        <a href="" class="me-2"><i class="fab fa-skype text-body link-hover"></i></a>
                         <a href="" class=""><i class="fab fa-pinterest-p text-body link-hover"></i></a>
                     </div>
                 </div>
@@ -52,36 +50,111 @@
                 <div class="collapse navbar-collapse bg-light py-3" id="navbarCollapse">
                     <div class="navbar-nav mx-auto border-top">
                         <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
-                        <a href="{% url 'detail' %}" class="nav-item nav-link">Detail Page</a>
-                        <a href="{% url '404' %}" class="nav-item nav-link">404 Page</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Dropdown</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Kategoriyalar</a>
                             <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                <a href="#" class="dropdown-item">Dropdown 1</a>
-                                <a href="#" class="dropdown-item">Dropdown 2</a>
-                                <a href="#" class="dropdown-item">Dropdown 3</a>
-                                <a href="#" class="dropdown-item">Dropdown 4</a>
+                                {% for category in categories %}
+                                    <a href="#" class="dropdown-item">{{ category.title }}</a>
+                                {% endfor %}
                             </div>
                         </div>
                         <a href="{% url 'contact' %}" class="nav-item nav-link">Contact Us</a>
                     </div>
                     <div class="d-flex flex-nowrap border-top pt-3 pt-xl-0">
                         <div class="d-flex">
-                            <img src="{% static 'img/weather-icon.png' %}" class="img-fluid w-100 me-2" alt="">
+                            <img id="weather-icon" src="{% static 'img/weather-icon.png' %}"
+                                 class="img-fluid me-2 weather-icon-bg" alt="" width="40px" height="45px">
                             <div class="d-flex align-items-center">
-                                <strong class="fs-4 text-secondary">31°C</strong>
+                                <strong id="weather" class="fs-4 text-secondary">Wait...</strong>
                                 <div class="d-flex flex-column ms-2" style="width: 150px;">
-                                    <span class="text-body">NEW YORK,</span>
-                                    <small>Mon. 10 jun 2024</small>
+                                    <span id="city" class="text-body">Wait...</span>
+                                    <small id="current-date">Fetching...</small>
                                 </div>
                             </div>
                         </div>
                         <button class="btn-search btn border border-primary btn-md-square rounded-circle bg-white my-auto"
-                                data-bs-toggle="modal" data-bs-target="#searchModal"><i
-                                class="fas fa-search text-primary"></i></button>
+                                data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="fas fa-search text-primary"></i>
+                        </button>
                     </div>
                 </div>
             </nav>
         </div>
     </div>
 </div>
+
+<script>
+    const apiKey = '10cada85de542bda8faafc109d8c4187';
+
+    function showWeather(lat, lon) {
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+        // "Wait..." xabarini ko'rsatish
+        document.getElementById("weather").innerHTML = "Wait...";
+        document.getElementById("city").innerHTML = "Fetching city...";
+
+        fetch(weatherUrl)
+            .then(response => response.json())
+            .then(data => {
+                const temperature = data.main.temp;
+                const description = data.weather[0].description;
+                const city = data.name;
+                const iconCode = data.weather[0].icon; // Iconka kodi
+
+                // OpenWeather API'dan ikonka URL'si
+                const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
+
+                // Shahar va ob-havo ma'lumotlarini yangilash
+                document.getElementById("weather").innerHTML = `${temperature}°C`;
+                document.getElementById("city").innerHTML = `${city}`;
+                document.getElementById("weather-icon").src = iconUrl; // Ikonka yangilash
+            })
+            .catch(error => {
+                // Xatolik yuz bersa
+                document.getElementById("weather").innerHTML = "No data";
+                document.getElementById("city").innerHTML = "No data";
+                document.getElementById("weather-icon").src = "{% static 'img/weather-icon.png' %}"; // Default ikonka
+            });
+    }
+
+    function showPosition(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        // Ob-havo ma'lumotlarini ko'rsatish
+        showWeather(latitude, longitude);
+    }
+
+    function showError(error) {
+        document.getElementById("weather").innerHTML = "No location";
+        document.getElementById("city").innerHTML = "No data";
+        document.getElementById("weather-icon").src = "{% static 'img/weather-icon.png' %}"; 
+    }
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            document.getElementById("weather").innerHTML = "Brauzer geolokatsiyani qo'llab-quvvatlamaydi.";
+            document.getElementById("city").innerHTML = "No data";
+        }
+    }
+
+    // Hozirgi sanani ko'rsatish
+    window.onload = function () {
+        const dateElement = document.getElementById('current-date');
+        const dateElement1 = document.getElementById('current-date1');
+
+        const today = new Date();
+        const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+
+        // Sanani formatlash va ko'rsatish
+        dateElement.innerHTML = today.toLocaleDateString('en-US', options);
+        dateElement1.innerHTML = today.toLocaleDateString('en-US', options);
+
+        // Joylashuv va ob-havo ma'lumotlarini olish
+        getLocation();
+    };
+</script>
+
+

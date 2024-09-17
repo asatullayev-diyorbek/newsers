@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import Category, Tag, News
+from .models import Category, Tag, News, Email
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -31,6 +31,14 @@ class NewsAdmin(admin.ModelAdmin):
         return mark_safe('<span>Rasm mavjud emas</span>')
 
 
+class EmailAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email', 'created_at')
+    list_display_links = ('id', 'email')
+    search_fields = ('id', 'email', 'created_at')
+
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(News, NewsAdmin)
+admin.site.register(Email, EmailAdmin)
