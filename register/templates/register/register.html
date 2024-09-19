@@ -17,7 +17,7 @@
             <div class="row mb-4">
                 <div class="col">
                     <div data-mdb-input-init class="form-outline">
-                        <label class="form-label" for="form3Example1">Ism</label>
+                        <label class="form-label" for="first_name">Ism</label>
                         {{ form.first_name }}
 
                         {% if form.first_name.errors %}
@@ -29,7 +29,7 @@
                 </div>
                 <div class="col">
                     <div data-mdb-input-init class="form-outline">
-                        <label class="form-label" for="form3Example2">Familiya</label>
+                        <label class="form-label" for="last_name">Familiya</label>
                         {{ form.last_name }}
 
                         {% if form.last_name.errors %}
@@ -44,7 +44,7 @@
             <div class="row mb-4">
                 <div class="col">
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form3Example3">Username</label>
+                        <label class="form-label" for="username">Username</label>
                         {{ form.username }}
 
                         {% if form.username.errors %}
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col">
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form3Example3">Email</label>
+                        <label class="form-label" for="email">Email</label>
                         {{ form.email }}
 
                         {% if form.email.errors %}
@@ -72,7 +72,7 @@
                 <div class="col">
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form3Example4">Parol o'ylab toping:</label>
+                        <label class="form-label" for="password1">Parol o'ylab toping:</label>
                         {{ form.password1 }}
 
                         {% if form.password1.errors %}
@@ -85,7 +85,7 @@
                 <div class="col">
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form3Example4">Parolni qayta tering:</label>
+                        <label class="form-label" for="password2">Parolni qayta tering:</label>
                         {{ form.password2 }}
 
                         {% if form.password2.errors %}

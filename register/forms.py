@@ -10,6 +10,7 @@ class RegisterForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
+                'id': 'first_name',
             }
         )
     )
@@ -18,6 +19,7 @@ class RegisterForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
+                'id': 'last_name',
             }
         )
     )
@@ -26,6 +28,7 @@ class RegisterForm(forms.Form):
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
+                'id': 'email',
             }
         )
     )
@@ -34,6 +37,7 @@ class RegisterForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
+                'id': 'username',
             }
         )
     )
@@ -43,6 +47,7 @@ class RegisterForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
+                'id': 'password1',
             }
         )
     )
@@ -52,6 +57,7 @@ class RegisterForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
+                'id': 'password2',
             }
         )
     )
@@ -85,11 +91,21 @@ class RegisterForm(forms.Form):
 class LoginForm(forms.Form):
     username = forms.CharField(
         max_length=30, required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'id': 'username',
+            }
+        )
     )
     password = forms.CharField(
         required=True,
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'id': 'password',
+            }
+        )
     )
 
     def clean(self):
