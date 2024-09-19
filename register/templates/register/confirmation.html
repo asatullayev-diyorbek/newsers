@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container py-5 d-flex justify-content-center">
+        <form method="get" class="w-50 justify-content-center text-center">
+            <!-- 2 column grid layout with text inputs for the first and last names -->
+            <h1 class="mb-4" style="color: blue;">Tasdiqlash</h1>
+            <h6 class="mb-4" style="color: darkred">Email manzilingiz va shu email manzilingizga yuborilgan tasdiqlash kodini kiriting</h6>
+
+            <div class="row mb-4">
+                <div class="col">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <label class="form-label" for="form3Example3">Email</label>
+                        <input name="email" type="email" id="form3Example3" class="form-control">
+                    </div>
+                </div>
+                <div class="col">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <label class="form-label" for="form3Example4">Tasdiqlash kodi</label>
+                        <input name="confirmation_code" type="text" id="form3Example4" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <button data-mdb-ripple-init type="submit" class="btn btn-outline-primary mb-4">Tasdiqlash</button>
+
+        </form>
+    </div>
+{% endblock %}
