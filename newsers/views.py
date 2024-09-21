@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
 import random
@@ -6,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 
 from .forms import EmailForm
-from .models import Category, News, Tag, Email
+from .models import Category, News, Tag, Email, Comment
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -28,6 +29,8 @@ class IndexView(View):
 
         seven_days_ago = timezone.now() - timedelta(days=7)
         recent_newses = News.objects.filter(is_active=True, created_at__gte=seven_days_ago)
+        if len(recent_newses) < 2:
+            recent_newses = newses
         most_newses = newses.order_by('-views')[:10]
         latest_newses = order_newses[:10]
         popular_newses = newses.order_by('-shares')[:4]
@@ -64,6 +67,29 @@ class DetailPageView(View):
         return render(request, 'newsers/detail.html', context)
 
 
+class CommentView(View):
+    def post(self, request):
+        news_id = request.POST.get('news_id')
+        content = request.POST.get('content')
+
+        if news_id and content:
+            news = News.objects.filter(is_active=True, id=news_id).first()
+            if news:
+                Comment.objects.create(
+                    content=content,
+                    news=news,
+                    user=request.user,
+                )
+                news.views += 1
+                news.save()
+                messages.success(request, "Yangilikning o'qituvchilari haqida xabar berdingiz!")
+
+        return redirect(request.META.get('HTTP_REFERER', 'index'))
+
+    def get(self, request):
+        return redirect(request.META.get('HTTP_REFERER', 'index'))
+
+
 class Page404View(View):
     def get(self, request):
         context = {
@@ -78,7 +104,6 @@ class ContactView(View):
             'title': "Bizga bog'lanish",
         }
         return render(request, 'newsers/contact.html', context)
-
 
 
 def subscribe_email(request):
@@ -127,3 +152,36 @@ class SendEmailView(View):
         else:
             messages.warning(request, "Yuborish uchun yangilik yo'q")
         return redirect('index')
+
+
+class SendMessageToAllUsers(View):
+    def get(self, request):
+        return render(request, 'newsers/message_user.html')
+
+    def post(self, request):
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        user_emails = []
+        subscribe_emails = set(Email.objects.all())
+        users = User.objects.all()
+
+        for user in users:
+            if user.email:
+                user_emails.append(user.email)
+
+        emails = subscribe_emails.union(user_emails)
+
+        if subject and message:
+            email_from = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [email for email in emails]
+            try:
+                send_mail(subject, message, email_from, recipient_list)
+                messages.success(request, f"Xabar {len(emails)} ta e-mailga yuborildi!")
+            except:
+                messages.error(request, "Yuborishda xatolik")
+        else:
+            messages.error(request, "Xabar uchun ma'lumotlarni to'ldiring!")
+
+        return redirect('send_message_to_all_users')
+
+

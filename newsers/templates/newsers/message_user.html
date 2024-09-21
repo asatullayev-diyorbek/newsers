@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+   {% load static %}
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="bg-light rounded p-5">
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="">
+                        <h1 class="mb-4">Barcha foydalanuvchilarga email xabar yuborish</h1>
+                        <p class="mb-4">The contact form is currently inactive. Get a functional and working contact
+                            form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and
+                            you're done. </p>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <form action="{% url 'send_message_to_all_users' %}" method="post" class="mb-4">
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <div class="col-lg-12">
+                                <input name="subject" type="text" class="w-100 form-control border-0 py-3"
+                                       placeholder="Mavzu">
+                            </div>
+                            <div class="col-12">
+                                <textarea name="message" class="w-100 form-control border-0" rows="6" cols="10"
+                                          placeholder="Xabar tafsiloti"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button class="w-100 btn btn-primary form-control py-3" type="submit">Submit Now
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

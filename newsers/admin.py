@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import Category, Tag, News, Email
+from .models import Category, Tag, News, Email, Comment
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -37,8 +37,18 @@ class EmailAdmin(admin.ModelAdmin):
     search_fields = ('id', 'email', 'created_at')
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'news', 'user', 'content', 'created_at')
+    list_display_links = ('id', 'news')
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ('user', 'content', 'created_at')
+        return super().get_readonly_fields(request, obj)
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(News, NewsAdmin)
 admin.site.register(Email, EmailAdmin)
+admin.site.register(Comment, CommentAdmin)

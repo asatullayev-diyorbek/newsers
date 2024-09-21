@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -64,3 +65,17 @@ class Email(models.Model):
     class Meta:
         verbose_name_plural = "E-maillar"
         verbose_name = "E-mail"
+
+
+class Comment(models.Model):
+    news = models.ForeignKey(News, on_delete=models.CASCADE, verbose_name="Yangilik")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Foydalanuvchi")
+    content = models.TextField(verbose_name="Komentariya")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Qo'shildi")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.news.title}"
+
+    class Meta:
+        verbose_name_plural = "Komentariyalar"
+        verbose_name = "Komentariya"
