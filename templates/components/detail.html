@@ -36,11 +36,9 @@
                         Share to telegram
                     </a>
                 </div>
-                {% autoescape off %}
-                    <p class="my-4">
-                        {{ news.description|linebreaks }}
-                    </p>
-                {% endautoescape %}
+                <p class="my-4">
+                    {{ news.description|safe }}
+                </p>
                 <div class="tab-class">
                     <div class="d-flex justify-content-between border-bottom mb-4">
                         <ul class="nav nav-pills d-inline-flex text-center">

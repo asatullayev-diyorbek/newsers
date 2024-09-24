@@ -79,6 +79,9 @@ class ConfirmationView(View):
 
 class LoginView(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            messages.warning(request, "Siz allaqachon tizimga kirib bo'lgansiz!")
+            return redirect('index')
         form = LoginForm()
         context = {
             'form': form,
@@ -92,7 +95,8 @@ class LoginView(View):
         if form.is_valid():
             login(request, form.cleaned_data['user'])
             messages.success(request, "Siz tizimga kirdingiz!")
-            return redirect('index')
+            next_url = request.GET.get('next', 'index')
+            return redirect(next_url)
         else:
             messages.error(request, "Xatolik! Kirishda xato yuz berdi!")
         context = {

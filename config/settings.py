@@ -19,6 +19,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,6 +28,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'newsers',
     'register',
+
+    # Ckeditor
+    'ckeditor',
+    'ckeditor_uploader',
+
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -99,6 +106,7 @@ STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 STATICFILES_DIRS = [
     BASE_DIR.joinpath('static'),
 ]
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 
 MEDIA_URL = 'media/'
@@ -110,6 +118,8 @@ MEDIA_ROOT = BASE_DIR /'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = 'login'
+
 # email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -118,3 +128,51 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'asatullayevblog@gmail.com'
 EMAIL_HOST_PASSWORD = 'ztuqrinhdhyzebux'
 DEFAULT_FROM_EMAIL = 'asatullayevblog@gmail.com'
+
+
+# Ckeditor
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt']},
+            {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert', 'items': ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+        ],
+        'height': 500,
+        'width': 'auto',
+        'extraAllowedContent': '*[*]',
+        'extraPlugins': 'iframe',
+    },
+}
+
+CKEDITOR_UPLOAD_PATH = "media/ckeditor/"
+CKEDITOR_RESTRICT_BY_USER = True
+
+
+# Jazzmin
+JAZZMIN_SETTINGS = {
+    "site_title": "Newsers",
+    "welcome_sign": "Admin Paneliga Xush Kelibsiz!",
+    "copyright": "2024 Sizning Nomingiz",
+    "search_model": "auth.User",
+    "user_avatar": "images/user_avatar.png",
+    "topmenu_links": [
+        {"name": "Bosh Sahifa", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Yangiliklar", "url": "/admin/newsers/news/", "permissions": ["app_name.view_model"]},
+    ],
+    "usermenu_links": [
+        {"model": "auth.User"},
+        {"model": "auth.Group"},
+    ],
+    "show_sidebar": True,
+    "show_ui_builder": True,
+    "changeform_format": "horizontal",
+    "pagination": 20,
+}

@@ -5,6 +5,7 @@ from datetime import timedelta
 import random
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import EmailForm
 from .models import Category, News, Tag, Email, Comment
@@ -13,7 +14,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
     def get(self, request):
         categories = Category.objects.all()
         newses = News.objects.filter(is_active=True)
@@ -53,7 +54,7 @@ class IndexView(View):
         return render(request, 'newsers/index.html', context)
 
 
-class DetailPageView(View):
+class DetailPageView(LoginRequiredMixin, View):
     def get(self, request, slug):
         categories = Category.objects.all()
         tags = Tag.objects.all()
@@ -67,7 +68,7 @@ class DetailPageView(View):
         return render(request, 'newsers/detail.html', context)
 
 
-class CommentView(View):
+class CommentView(LoginRequiredMixin, View):
     def post(self, request):
         news_id = request.POST.get('news_id')
         content = request.POST.get('content')
@@ -90,7 +91,7 @@ class CommentView(View):
         return redirect(request.META.get('HTTP_REFERER', 'index'))
 
 
-class Page404View(View):
+class Page404View(LoginRequiredMixin, View):
     def get(self, request):
         context = {
             'title': "404 Sahifa",
@@ -135,7 +136,7 @@ def subscribe_email(request):
     return redirect('index')
 
 
-class SendEmailView(View):
+class SendEmailView(LoginRequiredMixin, View):
     def get(self, request):
         news = News.objects.filter(is_weekly=True).order_by('-created_at').first()
         emails = Email.objects.all()
@@ -154,7 +155,7 @@ class SendEmailView(View):
         return redirect('index')
 
 
-class SendMessageToAllUsers(View):
+class SendMessageToAllUsers(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'newsers/message_user.html')
 
